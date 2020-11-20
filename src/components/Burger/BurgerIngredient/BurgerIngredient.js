@@ -42,8 +42,10 @@ const BurgerIngredient = (props) => {
     return ingredient;
 }
 
+BurgerIngredient.propTypes = {
+    type: PropTypes.string.isRequired
+}
+
+
 export default BurgerIngredient
 
-// BurgerIngredient.PropTypes = {
-//     ingredient: PropTypes.string
-// }
