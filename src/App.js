@@ -1,10 +1,17 @@
-import classes from './App.elements.css'
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div className={classes.App}>
-    </div>
-  );
+import Layout from './components/Layout/Layout'
+
+class App extends Component {
+  render() {
+    return (
+      <>
+        <Layout>
+          <p>TEST</p>
+        </Layout>
+      </>
+    );
+  }
 }
 
 export default App;
