@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Auxiliary from '../../hoc/Auxiliary'
 
 import Burger from '../../components/Burger/Burger'
-import BuildControls from '../../components/Burger/BuildControls/BuildsControls'
+import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 
 const INGREDIENT_PRICES  = {
     salad: 0.5,
@@ -80,6 +80,7 @@ class BurgerBuilder extends Component {
             <Auxiliary>
                 <Burger ingredients={this.state.ingredients}/>
                 <BuildControls
+                 price={this.state.totalPrice}
                  ingredientAdded={this.addIngredientHandler}
                  ingredientRemoved={this.removeIngredientHandler} 
                  disabled={diasbledInfo}/>
