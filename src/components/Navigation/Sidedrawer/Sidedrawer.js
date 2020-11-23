@@ -1,18 +1,16 @@
-import React from 'react'
-import classes from './Sidedrawer.module.css'
+import React from 'react';
 
-import Logo from '../../Logo/Logo'
-import NavigationItems from '../NavigationItems/NavigationItems'
-import Backdrop from '../../UI/Backdrop/Backdrop'
-import Auxiliary from '../../../hoc/Auxiliary'
+import Logo from '../../Logo/Logo';
+import NavigationItems from '../NavigationItems/NavigationItems';
+import classes from './Sidedrawer.module.css';
+import Backdrop from '../../UI/Backdrop/Backdrop';
+import Auxiliary from '../../../hoc/Auxiliary';
 
-const Sidedrawer = (props) => {
-    
-    let attachedClasses = [classes.SideDrawer, classes.Closed];
+const sideDrawer = ( props ) => {
+    let attachedClasses = [classes.SideDrawer, classes.Close];
     if (props.open) {
-        attachedClasses = [classes.SideDrawer, classes.Open]
+        attachedClasses = [classes.SideDrawer, classes.Open];
     }
-
     return (
         <Auxiliary>
             <Backdrop show={props.open} clicked={props.closed}/>
@@ -25,7 +23,7 @@ const Sidedrawer = (props) => {
                 </nav>
             </div>
         </Auxiliary>
-    )
-}
+    );
+};
 
-export default Sidedrawer
+export default sideDrawer;
