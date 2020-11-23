@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Auxiliary from '../../../hoc/Auxiliary'
+import Button from '../../UI/Button/Button'
 
 const OrderSummary = (props) => {
 
@@ -8,6 +9,8 @@ const OrderSummary = (props) => {
     .map(ingredientKey => {
         return (<li key={ingredientKey}><span style={{ textTransform: "capitalize" }}>{ingredientKey}</span> : {props.ingredients[ingredientKey]}</li>
     )});
+
+
     
     return (
         <Auxiliary>
@@ -17,8 +20,8 @@ const OrderSummary = (props) => {
                 {ingredientSummary}
             </ul>
             <p>Continue to Checkout?</p>
-            <button>CANCEL</button>
-            <button>CONTINUE</button>
+            <Button btnType="Danger" clicked={props.purchaseCanceled}>CANCEL</Button>
+            <Button btnType="Success" clicked={props.purchaseContinued}>CONTINUE</Button>
         </Auxiliary>
     )
 }

@@ -92,6 +92,10 @@ class BurgerBuilder extends Component {
         this.setState({ purchasing: false })
     }
 
+    purchaseContinueHandler = () => {
+        alert('Continue with burger')
+    }
+
     render() {
 
         const diasbledInfo = {
@@ -105,17 +109,17 @@ class BurgerBuilder extends Component {
         return (
             <Auxiliary>
                 <Modal show={this.state.purchasing} clicked={this.purchaseCancelHandler}>
-                    <OrderSummary ingredients={this.state.ingredients}/>
+                    <OrderSummary ingredients={this.state.ingredients} purchaseCanceled={this.purchaseCancelHandler} purchaseContinued={this.purchaseContinueHandler}/>
                 </Modal>
                 <Burger ingredients={this.state.ingredients}/>
                 <BuildControls
-                 price={this.state.totalPrice}
-                 ingredientAdded={this.addIngredientHandler}
-                 ingredientRemoved={this.removeIngredientHandler} 
-                 disabled={diasbledInfo}
-                 purchaseable={this.state.purchaseable}
-                 ordered={this.purchaseHandler}
-                 />
+                    price={this.state.totalPrice}
+                    ingredientAdded={this.addIngredientHandler}
+                    ingredientRemoved={this.removeIngredientHandler} 
+                    disabled={diasbledInfo}
+                    purchaseable={this.state.purchaseable}
+                    ordered={this.purchaseHandler}
+                />
             </Auxiliary>
         );
     }
