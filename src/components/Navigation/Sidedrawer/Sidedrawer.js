@@ -10,7 +10,10 @@ const Sidedrawer = (props) => {
 
     return (
         <div className={classes.Sidedrawer}>
-            <Logo />
+            <div className={classes.Logo}>
+                <Logo />
+            </div>
+            
             <nav>
                 <NavigationItems />
             </nav>
