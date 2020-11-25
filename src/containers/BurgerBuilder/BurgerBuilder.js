@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Auxiliary from '../../hoc/Auxiliary'
+import axios from '../../axios-orders'
 
+import Auxiliary from '../../hoc/Auxiliary'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal'
@@ -92,8 +93,53 @@ class BurgerBuilder extends Component {
         this.setState({ purchasing: false })
     }
 
-    purchaseContinueHandler = () => {
-        alert('Continue with burger')
+    // purchaseContinueHandler = () => {
+    //     // alert('Continue with burger')
+    //     // .json for correctly sending a request to firebase
+    //     const order = {
+    //         ingredients: this.state.ingredients,
+    //         // price should be caluclated on the server as well with production build
+    //         price: this.state.totalPrice,
+    //         // dummy data, for further improvement
+    //         customer: {
+    //             name: 'Wojti wojt',
+    //             address: {
+    //                 street: 'Testowa 1',
+    //                 zipCode: '213212',
+    //                 country: 'Poland'
+    //             },
+    //             email: 'test@test.com',
+    //             deliveryMethod: 'fastest'
+    //         }
+    //     }
+    //     axios.post('/orders.json', order)
+    //     .then((response) => console.log(response))
+    //     .catch((error) => console.log(error));
+    // }
+
+    purchaseContinueHandler = async () => {
+        const order = {
+            ingredients: this.state.ingredients,
+            // price should be caluclated on the server as well with production build
+            price: this.state.totalPrice.toFixed(2),
+            // dummy data, for further improvement
+            customer: {
+                name: 'Wojti wojt',
+                address: {
+                    street: 'Testowa 1',
+                    zipCode: '213212',
+                    country: 'Poland'
+                },
+                email: 'test@test.com',
+                deliveryMethod: 'fastest'
+            }
+        }
+        try {
+            const response = await axios.post('/orders.json', order)
+            console.log(response);
+        }catch (error) {
+            console.log(error);
+        }
     }
 
     render() {
