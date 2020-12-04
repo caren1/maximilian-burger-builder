@@ -3,7 +3,6 @@ import axios from '../../../axios-orders';
 import Button from '../../../components/UI/Button/Button';
 import classes from './ContactData.module.css'
 import Spinner from '../../../components/UI/Spinner/Spinner'
-import { withRouter } from 'react-router-dom'
 
 class componentName extends Component {
 
