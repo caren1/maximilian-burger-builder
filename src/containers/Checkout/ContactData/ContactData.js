@@ -59,7 +59,7 @@ class ContactData extends Component {
             {
               value: "cheapest",
               displayValue: "Cheapest",
-            }
+            },
           ],
         },
       },
@@ -72,10 +72,15 @@ class ContactData extends Component {
     // .json for correctly sending a request to firebase
     event.preventDefault();
     this.setState({ loading: true });
+    const formData = {};
+    for (let formElementIdentifier in this.state.orderForm) {
+      formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+    }
 
     const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.price,
+      ingredients: this.props.ingredients,
+      price: Number(this.props.price).toFixed(2),
+      orderData: formData,
     };
 
     axios
@@ -87,28 +92,42 @@ class ContactData extends Component {
       .catch((error) => this.setState({ loading: false }));
   };
 
-  render() {
+  handleInputChange = (event, inputIdentifier) => {
+    const updatedOrderForm = {
+      ...this.state.orderForm,
+    };
 
+    const updatedFormElement = {
+      ...updatedOrderForm[inputIdentifier],
+    };
+
+    updatedFormElement.value = event.target.value;
+    updatedOrderForm[inputIdentifier] = updatedFormElement;
+
+    this.setState({ orderForm: updatedOrderForm });
+  };
+
+  render() {
     const formElementsArray = [];
     for (let key in this.state.orderForm) {
-        formElementsArray.push({
-            id: key,
-            config: this.state.orderForm[key]
-        })
+      formElementsArray.push({
+        id: key,
+        config: this.state.orderForm[key],
+      });
     }
 
-    console.log(formElementsArray);
-    
     let form = (
-      <form>
-        {formElementsArray.map(formElement => (
-         <Input 
+      <form onSubmit={this.orderHandler}>
+        {formElementsArray.map((formElement) => (
+          <Input
             key={formElement.id}
             elementtype={formElement.config.elementType}
             elementConfig={formElement.config.elementConfig}
-            value={formElement.config.value}/>
+            value={formElement.config.value}
+            changed={(event) => this.handleInputChange(event, formElement.id)}
+          />
         ))}
-        <Button btnType="Success" clicked={this.orderHandler}>Order</Button>
+        <Button btnType="Success">Order</Button>
       </form>
     );
 
