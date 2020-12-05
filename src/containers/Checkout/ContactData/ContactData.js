@@ -1,75 +1,128 @@
-import React, { Component } from 'react';
-import axios from '../../../axios-orders';
-import Button from '../../../components/UI/Button/Button';
-import classes from './ContactData.module.css'
-import Spinner from '../../../components/UI/Spinner/Spinner'
+import React, { Component } from "react";
+import axios from "../../../axios-orders";
+import Button from "../../../components/UI/Button/Button";
+import classes from "./ContactData.module.css";
+import Spinner from "../../../components/UI/Spinner/Spinner";
+import Input from "../../../components/UI/Input/Input";
 
-class componentName extends Component {
-
-    state = {
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            postalCode: ''
+class ContactData extends Component {
+  state = {
+    orderForm: {
+      name: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Your name",
         },
-        loading: false
-    }
-
-    orderHandler = (event) => {
-
-        //  alert('Continue with burger')
-        // .json for correctly sending a request to firebase
-        event.preventDefault();
-        this.setState({ loading: true });
-
-        const order = {
-            ingredients: this.state.ingredients,
-            // price should be caluclated on the server as well with production build
-            price: this.state.price,
-            // dummy data, for further improvement
-            customer: {
-                name: this.state.name,
-                address: {
-                    street: this.state.address.street,
-                    zipCode: this.state.address.postalCode,
-                    country: 'Poland'
-                },
-                email: this.state.email,
-                deliveryMethod: 'fastest'
+        value: "",
+      },
+      street: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Street",
+        },
+        value: "",
+      },
+      zipCode: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "ZIP Code",
+        },
+        value: "",
+      },
+      country: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Country",
+        },
+        value: "",
+      },
+      email: {
+        elementType: "input",
+        elementConfig: {
+          type: "email",
+          placeholder: "Your E-mail",
+        },
+        value: "",
+      },
+      deliveryMethod: {
+        elementType: "select",
+        elementConfig: {
+          options: [
+            {
+              value: "fastest",
+              displayValue: "Fastest",
+            },
+            {
+              value: "cheapest",
+              displayValue: "Cheapest",
             }
-        }
-        axios.post('/orders.json', order)
-        .then((response) =>{ 
-            this.setState({ loading : false })
-            this.props.history.push('/');
+          ],
+        },
+      },
+    },
+    loading: false,
+  };
+
+  orderHandler = (event) => {
+    //  alert('Continue with burger')
+    // .json for correctly sending a request to firebase
+    event.preventDefault();
+    this.setState({ loading: true });
+
+    const order = {
+      ingredients: this.state.ingredients,
+      price: this.state.price,
+    };
+
+    axios
+      .post("/orders.json", order)
+      .then((response) => {
+        this.setState({ loading: false });
+        this.props.history.push("/");
+      })
+      .catch((error) => this.setState({ loading: false }));
+  };
+
+  render() {
+
+    const formElementsArray = [];
+    for (let key in this.state.orderForm) {
+        formElementsArray.push({
+            id: key,
+            config: this.state.orderForm[key]
         })
-        .catch((error) => this.setState({ loading : false }))
     }
 
-    render() {
+    console.log(formElementsArray);
+    
+    let form = (
+      <form>
+        {formElementsArray.map(formElement => (
+         <Input 
+            key={formElement.id}
+            elementtype={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}/>
+        ))}
+        <Button btnType="Success" clicked={this.orderHandler}>Order</Button>
+      </form>
+    );
 
-
-        let form = (
-            <form>
-                    <input className={classes.Input} type="text" name="name" placeholder="Your name"/>
-                    <input className={classes.Input} type="email" name="email" placeholder="Your e-mail"/>
-                    <input className={classes.Input} type="text" name="street" placeholder="Street"/>
-                    <input className={classes.Input} type="text" name="postal" placeholder="Postal Code"/>
-                    <Button btnType="Success" clicked={this.orderHandler}>Order</Button>
-                </form>
-        );
-        if (this.state.loading) {
-            form = <Spinner />
-        }
-
-        return (
-            <div className={classes.ContactData}>
-                <h4>Enter your contact data</h4>
-                {form}
-            </div>
-        );
+    if (this.state.loading) {
+      form = <Spinner />;
     }
+
+    return (
+      <div className={classes.ContactData}>
+        <h4>Enter your contact data</h4>
+        {form}
+      </div>
+    );
+  }
 }
 
-export default componentName;
+export default ContactData;
