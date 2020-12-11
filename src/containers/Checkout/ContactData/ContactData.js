@@ -92,11 +92,11 @@ class ContactData extends Component {
             },
           ],
         },
+        value: 'fastest',
         validation: {},
         valid: true,
       },
     },
-    loading: false,
     formIsValid: false,
   };
 
@@ -193,7 +193,7 @@ class ContactData extends Component {
       </form>
     );
 
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
 
@@ -208,15 +208,16 @@ class ContactData extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    ings: state.ingredients,
-    price: state.totalPrice,
+    ings: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
+    loading: state.order.loading
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onOrderBurger: (orderData) =>
-      dispatch(orderActions.purchaseBurgerStart(orderData)),
+      dispatch(orderActions.purchaseBurger(orderData)),
   };
 };
 
