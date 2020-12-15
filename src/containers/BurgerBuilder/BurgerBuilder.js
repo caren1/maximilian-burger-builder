@@ -11,6 +11,7 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import { Redirect } from "react-router-dom";
 
 class BurgerBuilder extends Component {
   // constructor(props) {
@@ -28,7 +29,11 @@ class BurgerBuilder extends Component {
   }
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuthenticated) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.history.push("/auth");
+    }
   };
 
   updatePurchaseState = (ingredients) => {
@@ -89,6 +94,7 @@ class BurgerBuilder extends Component {
             ingredientAdded={this.props.onAddIngredient}
             ingredientRemoved={this.props.onRemoveIngredient}
             disabled={diasbledInfo}
+            isAuth={this.props.isAuthenticated}
             purchaseable={this.updatePurchaseState(this.props.ings)}
             ordered={this.purchaseHandler}
           />
@@ -115,6 +121,7 @@ const mapStateToProps = (state) => {
     ings: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
     error: state.burgerBuilder.error,
+    isAuthenticated: state.auth.token !== null,
   };
 };
 
