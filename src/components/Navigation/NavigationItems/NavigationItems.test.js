@@ -1,5 +1,8 @@
 // *.test.js is important to run the tests
 // REFER TO JEST AND ENZYME DOCUMENTATION FOR CHCEKING METHOD AND TEST CASES SCENARIOS!!
+// it is not really required to write 100000 tests to test everything within component, since it might happen
+// that you did not include the one major test. Components might be even tested by only one test, that will check the crucial functionality.
+// WHATE ARE THE CRUCIAL THINGS THAT ARE INFLUENCED BY OTHER / EXTERNAL THINGS?
 
 // imported for the purpose of using as an argument to shallow function
 import React from "react";
