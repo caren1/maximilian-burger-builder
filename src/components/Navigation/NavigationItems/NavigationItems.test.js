@@ -1,4 +1,5 @@
 // *.test.js is important to run the tests
+// REFER TO JEST AND ENZYME DOCUMENTATION FOR CHCEKING METHOD AND TEST CASES SCENARIOS!!
 
 // imported for the purpose of using as an argument to shallow function
 import React from "react";
@@ -40,5 +41,12 @@ describe("Navigation Items", () => {
     // wrapper = shallow(<NavigationItems isAuthenticated={true} />)
     wrapper.setProps({ isAuthenticated: true });
     expect(wrapper.find(NavigationItem)).toHaveLength(3);
+  });
+
+  it("should have logout NavItem, if authenticated", () => {
+    wrapper.setProps({ isAuthenticated: true });
+    expect(
+      wrapper.contains(<NavigationItem link="/logout">Logout</NavigationItem>)
+    ).toEqual(true);
   });
 });
