@@ -1,5 +1,11 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
+// import dotenv from 'dotenv'
+
+// dotenv.config();
+
+// const theKey = process.env.API_KEY;
+// console.log(theKey);
 
 export const authStart = () => {
   return {
@@ -78,12 +84,10 @@ export const auth = (email, password, isSignUp) => {
       returnSecureToken: true,
     };
 
-    let url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDCmqqin6n74ZIgva8SOjrVPD8UUnniXsw";
+    let url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDCmqqin6n74ZIgva8SOjrVPD8UUnniXsw`;
 
     if (!isSignUp) {
-      url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDCmqqin6n74ZIgva8SOjrVPD8UUnniXsw";
+      url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDCmqqin6n74ZIgva8SOjrVPD8UUnniXsw}`;
     }
 
     axios
