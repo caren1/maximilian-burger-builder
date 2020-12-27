@@ -13,6 +13,8 @@ import * as actions from "../actions/index";
 
 export function* logoutSaga(action) {
   //each call within the generator function should be proceeded with 'yield' keyword
+  // other solution - allows for testing
+  // yield call ([localStorage, 'removeItem'], "token");
   yield localStorage.removeItem("token");
   yield localStorage.removeItem("expirationDate");
   yield localStorage.removeItem("userId");
