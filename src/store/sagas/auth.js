@@ -9,7 +9,7 @@ import { put } from 'redux-saga/effects'
 
 import * as actionTypes from '../actions/actionTypes'
 
-function* logout (action) {
+export function* logoutSaga (action) {
     //each call within the generator function should be proceeded with 'yield' keyword
     yield localStorage.removeItem("token");
     yield localStorage.removeItem("expirationDate");
