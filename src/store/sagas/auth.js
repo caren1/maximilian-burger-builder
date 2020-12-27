@@ -4,20 +4,58 @@
 // nextgen JS feature, which are function that can be execuited incremently
 // you can pause during the execution and ie. wait for some async operations
 
-import { put } from 'redux-saga/effects'
+import { put } from "redux-saga/effects";
 // will in the end dispatch a new action
+import { delay } from "redux-saga";
+import axios from "axios";
 
-import * as actionTypes from '../actions/actionTypes'
+import * as actions from "../actions/index";
 
-export function* logoutSaga (action) {
-    //each call within the generator function should be proceeded with 'yield' keyword
-    yield localStorage.removeItem("token");
-    yield localStorage.removeItem("expirationDate");
-    yield localStorage.removeItem("userId");
-    // it means that each step will wait for it to be executed completely
-    // if code'd be async it would wait for the result
+export function* logoutSaga(action) {
+  //each call within the generator function should be proceeded with 'yield' keyword
+  yield localStorage.removeItem("token");
+  yield localStorage.removeItem("expirationDate");
+  yield localStorage.removeItem("userId");
+  // it means that each step will wait for it to be executed completely
+  // if code'd be async it would wait for the result
 
-    yield put ({
-        type: actionTypes.AUTH_LOGOUT,
-      });
+  yield put(actions.logoutSucceed());
+}
+
+export function* checkAuthTimeoutSaga(action) {
+  yield delay(action.expirationTime * 1000);
+  yield put(actions.logout());
+}
+
+export function* authUserSaga(action) {
+  yield put(actions.authStart());
+
+  const authData = {
+    email: action.email,
+    password: action.password,
+    returnSecureToken: true,
+  };
+
+  let url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDCmqqin6n74ZIgva8SOjrVPD8UUnniXsw`;
+
+  if (!action.isSignUp) {
+    url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDCmqqin6n74ZIgva8SOjrVPD8UUnniXsw`;
+  }
+
+  try {
+    const response = yield axios.post(url, authData);
+
+    const expirationDate = new Date(
+      new Date().getTime() + response.data.expiresIn * 1000
+    );
+    yield localStorage.setItem("token", response.data.idToken);
+    yield localStorage.setItem("expirationDate", expirationDate);
+    yield localStorage.setItem("userId", response.data.localId);
+    yield put(
+      actions.authSuccess(response.data.idToken, response.data.localId)
+    );
+    yield put(actions.checkAuthTimeout(response.data.expiresIn));
+  } catch (error) {
+    yield put(action.authFail(error.response.data.error));
+  }
 }
